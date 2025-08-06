@@ -1,16 +1,12 @@
 "use client";
 import { Search,X } from 'lucide-react';
-import { useState } from "react";
-const NavBar = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const handleChange = (value: string) => {
-    console.log(value);
-    setSearchQuery(value);
-  };
+import Link from 'next/link'
+import { useSearch } from "@/context/SearchContext";
 
+const NavBar = () => {
+const { searchQuery, setSearchQuery } = useSearch();
   return (
     <nav className="flex justify-between items-center px-6 py-4 bg-[#03256C] sticky top-0 z-50 shadow-md">
-      {/* Logo */}
       <div className="flex gap-2 items-center">
         <span className="text-cyan-300 text-2xl font-bold hover:text-cyan-100 transition-colors">
           JobFinder
@@ -25,11 +21,11 @@ const NavBar = () => {
             placeholder="Search by title or location…"
             className="w-full px-4 py-2 rounded-lg bg-white text-gray-800 focus:ring-2 focus:ring-cyan-300 outline-none"
             value={searchQuery}
-            onChange={(e) => handleChange(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           {searchQuery.length > 0 ? (
             <button
-              onClick={() => handleChange("")}
+              onClick={() => setSearchQuery("")}
               className="absolute right-3 top-2.5 cursor-pointer text-lg font-bold hover:text-red-700"
             >
               <X size={20} />
@@ -42,17 +38,17 @@ const NavBar = () => {
 
       {/* Navigation Links */}
       <div className="flex gap-6">
-        {/* <Link to="/"> */}
-        <span className="text-white font-medium hover:text-cyan-300 cursor-pointer transition-colors">
-          Home
-        </span>
-        {/* </Link>
-        <Link to="/jobs"> */}
-        <span className="text-white font-medium hover:text-cyan-300 cursor-pointer transition-colors">
-          Jobs
-        </span>
-        {/* </Link>
-        <Link to="/add-jobs"> */}
+        <Link href="/">
+          <span className="text-white font-medium hover:text-cyan-300 cursor-pointer transition-colors">
+            Home
+          </span>
+        </Link>
+        <Link href="/jobs">
+          <span className="text-white font-medium hover:text-cyan-300 cursor-pointer transition-colors">
+            Jobs
+          </span>
+        </Link>
+        {/* <Link to="/add-jobs"> */}
         <span className="text-white font-medium hover:text-cyan-300 cursor-pointer transition-colors">
           Add Jobs
         </span>
