@@ -8,9 +8,11 @@ const { searchQuery, setSearchQuery } = useSearch();
   return (
     <nav className="flex justify-between items-center px-6 py-4 bg-[#03256C] sticky top-0 z-50 shadow-md">
       <div className="flex gap-2 items-center">
-        <span className="text-cyan-300 text-2xl font-bold hover:text-cyan-100 transition-colors">
-          JobFinder
-        </span>
+        <Link href="/">
+          <span className="text-cyan-300 text-2xl font-bold hover:text-cyan-100 transition-colors">
+            Next Hire
+          </span>
+        </Link>
       </div>
 
       {/* Search Bar */}

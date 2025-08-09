@@ -40,7 +40,7 @@ function JobCard({ job }: { job: Job }) {
             <span>{job.salary}</span>
           </div>
         </div>
-
+        {/* <Link href={`/jobs/${job.id}`}></Link> */}
         <button className="w-full mt-4 bg-[#2541B2] hover:bg-[#1A2F8A] text-white py-2 px-4 rounded-lg transition-colors">
           Apply Now
         </button>

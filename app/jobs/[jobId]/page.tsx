@@ -5,7 +5,6 @@ import { DollarSign, MapPin } from "lucide-react";
 const JobDetails = async ({ params }: { params: { jobId: string } }) => {
   const { jobId } = await params;
   const job = jobs_data.find((job) => job.id === parseInt(jobId));
-
   if (!job) {
     return (
       <h1 className="text-center text-2xl mt-10 font-semibold">
