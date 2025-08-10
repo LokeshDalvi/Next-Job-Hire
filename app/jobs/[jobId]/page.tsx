@@ -1,15 +1,24 @@
 import Link from "next/link";
-import jobs_data from "@/data/job-data.json";
 import { DollarSign, MapPin } from "lucide-react";
+import { fetchJobs } from "@/lib/fetchJobs";
+import { Job } from "@/components/JobCard";
 
 const JobDetails = async ({ params }: { params: { jobId: string } }) => {
+  const jobs: Job[] = await fetchJobs({ results: 50 });
   const { jobId } = await params;
-  const job = jobs_data.find((job) => job.id === parseInt(jobId));
+  const job = jobs.find((j) => j.id === jobId);
+
   if (!job) {
     return (
-      <h1 className="text-center text-2xl mt-10 font-semibold">
-        Job Not Found
-      </h1>
+      <div className="text-center mt-20">
+        <h1 className="text-2xl font-semibold mb-4">Job Not Found</h1>
+        <Link
+          href="/jobs"
+          className="inline-flex items-center px-4 py-2 bg-[#2541B2] text-white rounded-lg hover:bg-[#1A2F8A] transition-colors"
+        >
+          ← Back to Listings
+        </Link>
+      </div>
     );
   }
 
@@ -32,12 +41,12 @@ const JobDetails = async ({ params }: { params: { jobId: string } }) => {
         <div className="flex flex-wrap gap-4 mb-6">
           <div className="flex items-center gap-2 bg-cyan-100 text-cyan-800 text-sm px-4 py-1.5 rounded-full">
             <MapPin className="w-4 h-4" />
-            <span>{job.location}</span>
+            <span>{job.location.display_name}</span>
           </div>
 
           <div className="flex items-center gap-2 bg-purple-100 text-purple-800 text-sm px-4 py-1.5 rounded-full">
             <DollarSign className="w-4 h-4" />
-            <span>{job.salary}</span>
+            <span>{job.salary_min} - {job.salary_max}</span>
           </div>
         </div>
 

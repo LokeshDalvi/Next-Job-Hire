@@ -1,12 +1,15 @@
 import Link from "next/link";
 import { DollarSign, MapPin } from "lucide-react";
 
-type Job = {
-  id: number;
+export type Job = {
+  id: string;
   title: string;
   description: string;
-  location: string;
-  salary: string;
+  location: {
+    display_name:string,
+  };
+  salary_min: number;
+  salary_max: number;
 };
 
 function JobCard({ job }: { job: Job }) {
@@ -32,12 +35,12 @@ function JobCard({ job }: { job: Job }) {
         <div className="flex flex-wrap gap-4 mb-6">
           <div className="flex items-center gap-2 bg-cyan-100 text-cyan-800 text-sm px-4 py-1.5 rounded-full">
             <MapPin className="w-4 h-4" />
-            <span>{job.location}</span>
+            <span>{job.location.display_name}</span>
           </div>
 
           <div className="flex items-center gap-2 bg-purple-100 text-purple-800 text-sm px-4 py-1.5 rounded-full">
             <DollarSign className="w-4 h-4" />
-            <span>{job.salary}</span>
+            <span>{job.salary_min} - {job.salary_max}</span>
           </div>
         </div>
         {/* <Link href={`/jobs/${job.id}`}></Link> */}

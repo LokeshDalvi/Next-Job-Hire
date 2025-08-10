@@ -1,9 +1,9 @@
 import Link from "next/link";
-import JobCard from "@/components/JobCard";
-import jobs_data from "@/data/job-data.json";
+import JobCard,{Job} from "@/components/JobCard";
+import { fetchJobs } from "@/lib/fetchJobs";
 
-export default function Home() {
-  const new_jobs = jobs_data.slice(4);
+export default async function Home() {
+   const new_jobs: Job[] = await fetchJobs({ results: 5 });
 
   return (
     <>
