@@ -3,7 +3,7 @@ import { DollarSign, MapPin } from "lucide-react";
 import { fetchJobs } from "@/lib/fetchJobs";
 import { Job } from "@/components/JobCard";
 
-const JobDetails = async ({ params }: { params: { jobId: string } }) => {
+const JobDetails = async ({ params }: { params: Promise<{jobId: string }> }) => {
   const jobs: Job[] = await fetchJobs({ results: 50 });
   const { jobId } = await params;
   const job = jobs.find((j) => j.id === jobId);
