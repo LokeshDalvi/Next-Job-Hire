@@ -50,11 +50,11 @@ const { searchQuery, setSearchQuery } = useSearch();
             Jobs
           </span>
         </Link>
-        {/* <Link to="/add-jobs"> */}
+        <Link href="/addJobs">
         <span className="text-white font-medium hover:text-cyan-300 cursor-pointer transition-colors">
           Add Jobs
         </span>
-        {/* </Link> */}
+        </Link>
       </div>
     </nav>
   );
