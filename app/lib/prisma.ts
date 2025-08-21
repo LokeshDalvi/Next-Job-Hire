@@ -22,8 +22,8 @@ export function addJob(
   location: string,
   description: string,
   url: string,
-  min_salary?: number,
-  max_salary?: number
+  min_salary: number,
+  max_salary: number
 ) {
   const externalId = generateExternalId();
   return prisma.job.create({
