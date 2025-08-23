@@ -19,7 +19,6 @@ export interface RawJob {
   category?: string | { label: string };
 }
 
-// lib/types.ts
 export type Job = {
   id: string;
   title: string;
