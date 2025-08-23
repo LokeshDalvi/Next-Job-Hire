@@ -1,12 +1,22 @@
 import Link from "next/link";
-import { DollarSign, MapPin } from "lucide-react";
-import { fetchJobs } from "@/lib/fetchJobs";
-import { Job } from "@/components/JobCard";
+import { redirect } from "next/navigation";
+import { DollarSign, MapPin, Pencil, Trash2 } from "lucide-react";
+import type { Job } from "@/lib/types";
+import { prisma } from "@/lib/prisma";
+import { updateJob, deleteJob } from "./actions"; // clean import
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
-const JobDetails = async ({ params }: { params: Promise<{jobId: string }> }) => {
-  const jobs: Job[] = await fetchJobs({ results: 50 });
+const JobDetails = async ({
+  params,
+}: {
+  params: Promise<{ jobId: string }>;
+}) => {
   const { jobId } = await params;
-  const job = jobs.find((j) => j.id === jobId);
+
+  const job: Job | null = await prisma.job.findUnique({
+    where: { id: jobId },
+  });
 
   if (!job) {
     return (
@@ -20,6 +30,18 @@ const JobDetails = async ({ params }: { params: Promise<{jobId: string }> }) => 
         </Link>
       </div>
     );
+  }
+
+  async function updateJobAction() {
+    "use server";
+    await updateJob(jobId);
+    redirect("/jobs");
+  }
+
+  async function deleteJobAction() {
+    "use server";
+    await deleteJob(jobId);
+    redirect("/jobs");
   }
 
   return (
@@ -41,12 +63,14 @@ const JobDetails = async ({ params }: { params: Promise<{jobId: string }> }) => 
         <div className="flex flex-wrap gap-4 mb-6">
           <div className="flex items-center gap-2 bg-cyan-100 text-cyan-800 text-sm px-4 py-1.5 rounded-full">
             <MapPin className="w-4 h-4" />
-            <span>{job.location.display_name}</span>
+            <span>{job.location}</span>
           </div>
 
           <div className="flex items-center gap-2 bg-purple-100 text-purple-800 text-sm px-4 py-1.5 rounded-full">
             <DollarSign className="w-4 h-4" />
-            <span>{job.salary_min} - {job.salary_max}</span>
+            <span>
+              {job.min_salary} - {job.max_salary}
+            </span>
           </div>
         </div>
 
@@ -61,6 +85,23 @@ const JobDetails = async ({ params }: { params: Promise<{jobId: string }> }) => 
           >
             ← Back to Listings
           </Link>
+        </div>
+        {/* Actions */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+
+          <form action={updateJobAction}>
+          <button className="flex items-center gap-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 py-2 px-3 rounded-lg text-sm">
+            <Pencil className="w-4 h-4" /> Edit
+          </button>
+          </form>
+          <form action={deleteJobAction}>
+            <button
+              type="submit"
+              className="flex items-center gap-1 bg-red-100 hover:bg-red-200 text-red-800 py-2 px-3 rounded-lg text-sm"
+            >
+              <Trash2 className="w-4 h-4" /> Delete
+            </button>
+          </form>
         </div>
       </div>
     </>

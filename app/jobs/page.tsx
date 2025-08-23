@@ -1,14 +1,14 @@
 // app/jobs/JobsPage.tsx
 import JobsListings from "@/components/JobsListings";
-import {Job} from "@/components/JobCard";
-import { fetchJobs } from "@/lib/fetchJobs";
+import type { Job } from "@/lib/types"; 
+import { prisma } from "@/lib/prisma";
+
 async function JobsPage() {
+  const jobs: Job[] = await prisma.job.findMany({
+    orderBy: { createdAt: "desc" },
+  });
 
-  const jobs: Job[] = await fetchJobs({ results: 15 });
-
-  return (
-      <JobsListings jobs={jobs} />
-  );
+  return <JobsListings jobs={jobs} />;
 }
 
 export default JobsPage;

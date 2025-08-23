@@ -1,9 +1,15 @@
 import Link from "next/link";
-import JobCard,{Job} from "@/components/JobCard";
-import { fetchJobs } from "@/lib/fetchJobs";
+import JobCard from "@/components/JobCard";
+import type { Job } from "@/lib/types"; 
+import { prisma } from "@/lib/prisma";
+
 
 export default async function Home() {
-   const new_jobs: Job[] = await fetchJobs({ results: 5 });
+  const newJobs: Job[]= await prisma.job.findMany({
+    take: 5,
+    orderBy: { createdAt: "desc" },
+  });
+  
 
   return (
     <>
@@ -25,7 +31,7 @@ export default async function Home() {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {new_jobs.map((job) => (
+        {newJobs.map((job) => (
           <JobCard key={job.id} job={job} />
         ))}
       </div>

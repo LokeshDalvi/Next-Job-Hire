@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "public"."Job" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "company" TEXT NOT NULL,
     "location" TEXT NOT NULL,
@@ -12,6 +12,8 @@ CREATE TABLE "public"."Job" (
     "max_salary" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "contract_type" TEXT,
+    "category" TEXT,
 
     CONSTRAINT "Job_pkey" PRIMARY KEY ("id")
 );
