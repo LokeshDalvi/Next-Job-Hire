@@ -1,6 +1,5 @@
 // lib/fetchJobs.ts
 import { Job } from "@/lib/types"; 
-import { normalizeJob } from "@/lib/job"; 
 
 export async function fetchJobs({
   results = 10,
@@ -18,14 +17,4 @@ export async function fetchJobs({
 
   const data = await res.json();
   return data.results || [];
-}
-
-export async function fetchJobById(jobId: string) {
-  const url = `https://api.adzuna.com/v1/api/jobs/in/search/1?app_id=${process.env.ADZUNA_APP_ID}&app_key=${process.env.ADZUNA_APP_KEY}&id=${jobId}`;
-
-  const res = await fetch(url);
-  if (!res.ok) return null;
-
-  const data = await res.json();
-  return data.results[0] ? normalizeJob(data.results[0]) : null;
 }
