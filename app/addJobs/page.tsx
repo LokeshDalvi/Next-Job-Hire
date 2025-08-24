@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { addJob } from "@/lib/prisma";
+import { addJob } from "./actions";
 
 const AddJobs = () => {
   async function createJob(formData: FormData) {

@@ -1,11 +1,8 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { DollarSign, MapPin, Pencil, Trash2 } from "lucide-react";
+import { DollarSign, MapPin, Pencil} from "lucide-react";
 import type { Job } from "@/lib/types";
 import { prisma } from "@/lib/prisma";
-import { updateJob, deleteJob } from "./actions"; // clean import
-import Swal from "sweetalert2";
-import toast from "react-hot-toast";
+import DeleteJobButton from "./DeleteJobButton";
 
 const JobDetails = async ({
   params,
@@ -30,18 +27,6 @@ const JobDetails = async ({
         </Link>
       </div>
     );
-  }
-
-  async function updateJobAction() {
-    "use server";
-    await updateJob(jobId);
-    redirect("/jobs");
-  }
-
-  async function deleteJobAction() {
-    "use server";
-    await deleteJob(jobId);
-    redirect("/jobs");
   }
 
   return (
@@ -88,20 +73,15 @@ const JobDetails = async ({
         </div>
         {/* Actions */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-
-          <form action={updateJobAction}>
-          <button className="flex items-center gap-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 py-2 px-3 rounded-lg text-sm">
-            <Pencil className="w-4 h-4" /> Edit
-          </button>
-          </form>
-          <form action={deleteJobAction}>
-            <button
-              type="submit"
-              className="flex items-center gap-1 bg-red-100 hover:bg-red-200 text-red-800 py-2 px-3 rounded-lg text-sm"
-            >
-              <Trash2 className="w-4 h-4" /> Delete
+          <Link
+            href={`/jobs/${job.id}/edit`}
+          >
+            <button className="flex items-center gap-1 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 py-2 px-3 rounded-lg text-sm">
+              <Pencil className="w-4 h-4" /> Edit
             </button>
-          </form>
+          </Link>
+          {/* Replace old delete form with new button */}
+          <DeleteJobButton jobId={job.id} title={job.title} />
         </div>
       </div>
     </>

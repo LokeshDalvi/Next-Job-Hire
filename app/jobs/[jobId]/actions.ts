@@ -1,19 +1,26 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
-export async function updateJob(
-  id: string,
-  title: string,
-  company: string,
-  location: string,
-  description: string,
-  url: string,
-  externalId: string,
-  min_salary: number,
-  max_salary: number
-) {
-  return prisma.job.update({
+export async function getJob(id: string) {
+  return prisma.job.findUnique({
+    where: { id },
+  });
+}
+
+export async function updateJob(formData: FormData) {
+  const id = formData.get("id") as string;
+  const title = formData.get("title") as string;
+  const company = formData.get("company") as string;
+  const location = formData.get("location") as string;
+  const description = formData.get("description") as string;
+  const url = formData.get("url") as string;
+  const externalId = formData.get("externalId") as string;
+  const min_salary = Number(formData.get("min_salary"));
+  const max_salary = Number(formData.get("max_salary"));
+
+  await prisma.job.update({
     where: { id },
     data: {
       title,
@@ -27,6 +34,7 @@ export async function updateJob(
       externalId,
     },
   });
+  redirect(`/jobs/${id}`);
 }
 
 export async function deleteJob(id: string) {
