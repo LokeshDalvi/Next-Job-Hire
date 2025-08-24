@@ -1,3 +1,5 @@
+"use server";
+
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 
@@ -12,20 +14,27 @@ export async function addJob(
   description: string,
   url: string,
   min_salary: number,
-  max_salary: number
+  max_salary: number,
 ) {
-  const externalId = generateExternalId();
-  return prisma.job.create({
-    data: {
-      title,
-      company,
-      location,
-      description,
-      url,
-      min_salary,
-      max_salary,
-      source: "Job Portal",
-      externalId,
-    },
-  });
+  try {
+    const externalId = generateExternalId();
+    await prisma.job.create({
+      data: {
+        title,
+        company,
+        location,
+        description,
+        url,
+        min_salary,
+        max_salary,
+        source: "Job Portal",
+        externalId,
+      },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error adding job:", error);
+    return { success: false, error: "Failed to add job" };
+  }
 }

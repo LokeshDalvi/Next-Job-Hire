@@ -1,34 +1,38 @@
-import { redirect } from "next/navigation";
+"use client";
+
 import { addJob } from "./actions";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
-const AddJobs = () => {
-  async function createJob(formData: FormData) {
-    "use server";
-    const title = formData.get("title") as string;
-    const companyName = formData.get("companyName") as string;
-    const location = formData.get("location") as string;
-    const url = formData.get("url") as string || "";
-    const description = formData.get("description") as string;
-    const min_salary = formData.get("min_salary") as string;
-    const max_salary = formData.get("max_salary") as string;
+export default function AddJobs() {
+  const router = useRouter();
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
 
-    await addJob(
-      title,
-      companyName,
-      location,
-      description,
-      url,
-      parseInt(min_salary),
-      parseInt(max_salary),
+    const result = await addJob(
+      formData.get("title") as string,
+      formData.get("companyName") as string,
+      formData.get("location") as string,
+      formData.get("description") as string,
+      (formData.get("url") as string) || "",
+      parseInt(formData.get("min_salary") as string),
+      parseInt(formData.get("max_salary") as string),
     );
-    redirect("/jobs");
+
+    if (result.success) {
+      toast.success("Job added successfully!");
+      router.push("/jobs");
+    } else {
+      toast.error("Failed to add job!");
+    }
   }
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-xl mt-10">
       <h1 className="text-2xl font-bold mb-6">Add Job</h1>
-      <form action={createJob} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {/* Title */}
         <div>
           <label className="block mb-1 font-medium">Job Title</label>
@@ -114,6 +118,4 @@ const AddJobs = () => {
       </form>
     </div>
   );
-};
-
-export default AddJobs;
+}

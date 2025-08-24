@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SearchProvider from "@/context/SearchContext";
+import { Toaster } from "react-hot-toast";
 import Navbar from "@/components/NavBar"; // make sure path is correct
 
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SearchProvider>
           <Navbar />
           {children}
+          <Toaster position="top-right" />
         </SearchProvider>
       </body>
     </html>
