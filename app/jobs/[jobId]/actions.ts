@@ -1,7 +1,8 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-// import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+
 
 export async function getJob(id: string) {
   return prisma.job.findUnique({
@@ -35,7 +36,7 @@ export async function updateJob(formData: FormData) {
         externalId,
       },
     });
-
+    revalidatePath(`/jobs/${id}`);
     return { success: true, id };
   } catch (err) {
     console.error("Error updating job:", err);

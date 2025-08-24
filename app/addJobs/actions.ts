@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
+import { revalidatePath } from "next/cache";
 
 function generateExternalId(length = 10) {
   return crypto.randomBytes(length).toString("hex").slice(0, length);
@@ -32,6 +33,7 @@ export async function addJob(
       },
     });
 
+    revalidatePath("/jobs");
     return { success: true };
   } catch (error) {
     console.error("Error adding job:", error);
